@@ -38,7 +38,7 @@
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    transition: background-color 300ms ease, color 300ms ease;
+    
   }
 }
 
@@ -51,7 +51,7 @@
     border: 1px solid var(--glass-border);
     border-radius: 1rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transition: all 300ms ease;
+    
   }
 
   :where(.glass-card) p, 

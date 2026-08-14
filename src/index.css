@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #F1F5F9;
+    --bg-secondary: #ffffff;
+    --text-primary: #0F172A;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --neon-glow: transparent;
+  }
+  
+  .dark {
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --text-primary: #FBFAFC;
+    --text-secondary: #9ca3af;
+    --border-color: #374151;
+    --glass-bg: rgba(17, 24, 39, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --neon-glow: rgba(37, 99, 235, 0.15);
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 300ms ease, color 300ms ease;
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 300ms ease;
+  }
+
+  :where(.glass-card) p, 
+  :where(.glass-card) span, 
+  :where(.glass-card) small,
+  :where(.glass-card) label {
+    color: var(--text-secondary);
+  }
+
+  :where(.glass-card) h1, 
+  :where(.glass-card) h2, 
+  :where(.glass-card) h3, 
+  :where(.glass-card) h4, 
+  :where(.glass-card) h5, 
+  :where(.glass-card) h6, 
+  :where(.glass-card) strong, 
+  :where(.glass-card) b {
+    color: var(--text-primary);
+  }
+
+  .dark .glass-card {
+    box-shadow: 0 4px 20px -2px var(--neon-glow);
+  }
+  
+  .neon-border {
+    border-color: #3B82F6;
+    box-shadow: 0 0 10px var(--neon-glow), inset 0 0 10px var(--neon-glow);
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  html:not(.dark) .light-card {
+    background-color: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+  }
+  
+  :where(html:not(.dark) .light-card) p,
+  :where(html:not(.dark) .light-card) span,
+  :where(html:not(.dark) .light-card) small,
+  :where(html:not(.dark) .light-card) label {
+    color: var(--text-secondary);
+  }
+
+  :where(html:not(.dark) .light-card) h1,
+  :where(html:not(.dark) .light-card) h2,
+  :where(html:not(.dark) .light-card) h3,
+  :where(html:not(.dark) .light-card) h4,
+  :where(html:not(.dark) .light-card) h5,
+  :where(html:not(.dark) .light-card) h6,
+  :where(html:not(.dark) .light-card) strong,
+  :where(html:not(.dark) .light-card) b {
+    color: var(--text-primary);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #374151;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}
+
+@theme {
+  --color-green-100: #D1FAE5;
+  --color-blue-100: #E0F2FE;
+  --color-slate-100: #F1F5F9;
+  --color-slate-900: #0F172A;
+  --color-gray-900: #111827;
+}

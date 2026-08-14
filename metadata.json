@@ -1,0 +1,6 @@
+{
+  "name": "NexaGrow",
+  "description": "Platform pertanian cerdas generasi berikutnya yang membantu pertumbuhan tanaman secara efisien.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

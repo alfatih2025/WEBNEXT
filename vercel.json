@@ -1,0 +1,23 @@
+{
+  "env": {
+    "SUPABASE_URL": "https://uhqpttkysypnknafyarw.supabase.co",
+    "SUPABASE_ANON_KEY": "sb_publishable_voGHASEfyiTdou_vsKFCDg_BYbQA59b",
+    "SUPABASE_SERVICE_ROLE_KEY": "",
+    "API_AUTH_TOKEN": "NXG_2026_x7f83K2Lm91",
+    "SECRET_API_KEY": "NexaGrow_SecretKey_2026",
+    "VITE_SUPABASE_URL": "https://uhqpttkysypnknafyarw.supabase.co",
+    "VITE_SUPABASE_ANON_KEY": "sb_publishable_voGHASEfyiTdou_vsKFCDg_BYbQA59b",
+    "VITE_API_AUTH_TOKEN": "NXG_2026_x7f83K2Lm91",
+    "VITE_BMKG_URL": "https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4=33.74.05.1001",
+    "VITE_GOOGLE_CLIENT_ID": "",
+    "VITE_GOOGLE_AUTH_PROXY": "",
+    "FULLSTACK_PROJECT_REF": "",
+    "FULLSTACK_RESTORE_API_URL": ""
+  },
+  "rewrites": [
+    {
+      "source": "/((?!api/.*).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -33,33 +33,33 @@ export function Dashboard({ sensorData, settings, weatherData }: DashboardProps)
   return (
     <div className="space-y-8 pb-8">
       {/* Hero / Network Status */}
-      <div className="glass-card overflow-hidden border-0 bg-gradient-to-br from-slate-900 to-slate-800 text-white relative">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+      <div className="glass-card overflow-hidden border-0 bg-gradient-to-br from-green-50 to-emerald-100/50 dark:from-slate-900 dark:to-slate-800 text-slate-900 dark:text-white relative">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 dark:opacity-10"></div>
         <div className="relative p-6 lg:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl text-white md:text-4xl font-black tracking-tight mb-2 flex items-center gap-3">
+            <h1 className="text-3xl text-slate-900 dark:text-white md:text-4xl font-black tracking-tight mb-2 flex items-center gap-3">
               <Network className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               NexaGrow ESP-NOW
             </h1>
-            <p className="text-slate-300 text-sm md:text-base max-w-xl">
+            <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base max-w-xl">
               Platform smart agriculture berbasis IoT. Memantau 2 Wemos Node via ESP32 Gateway secara real-time.
             </p>
           </div>
-          <div className="flex flex-col items-end gap-2 bg-slate-950/50 p-4 rounded-2xl border border-white/10 backdrop-blur-md">
+          <div className="flex flex-col items-end gap-2 bg-white/60 dark:bg-slate-950/50 p-4 rounded-2xl border border-white/40 dark:border-white/10 backdrop-blur-md shadow-sm dark:shadow-none">
             <div className="text-sm text-slate-600 font-medium dark:text-slate-300">Status Jaringan</div>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${mqttConnected ? 'bg-blue-400' : 'bg-red-500'}`}></div>
-                <span className="font-semibold">{mqttConnected ? 'Broker OK' : 'Broker Disconnected'}</span>
+                <div className={`w-2 h-2 rounded-full ${mqttConnected ? 'bg-blue-500 dark:bg-blue-400' : 'bg-red-500'}`}></div>
+                <span className="font-semibold text-slate-700 dark:text-slate-100">{mqttConnected ? 'Broker OK' : 'Broker Disconnected'}</span>
               </div>
-              <div className="w-px h-4 bg-slate-700"></div>
+              <div className="w-px h-4 bg-slate-300 dark:bg-slate-700"></div>
               <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${nodesOnline > 0 ? 'bg-green-400' : 'bg-red-500'}`}></div>
-                <span className="font-semibold text-green-600 dark:text-green-400">{nodesOnline}/2 Nodes Online</span>
+                <div className={`w-2 h-2 rounded-full ${nodesOnline > 0 ? 'bg-green-500 dark:bg-green-400' : 'bg-red-500'}`}></div>
+                <span className="font-semibold text-green-700 dark:text-green-400">{nodesOnline}/2 Nodes Online</span>
               </div>
-            </div>
-          </div>
         </div>
+      </div>
+      </div>
       </div>
 
       {/* Node Cards */}

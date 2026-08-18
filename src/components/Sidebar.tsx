@@ -13,6 +13,8 @@ import {
   BookOpen,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../hooks/useAuth';
+import { LogOut } from 'lucide-react';
 import logo from '../assets/nexagrow-logo.png';
 
 export type PageId =
@@ -23,7 +25,8 @@ export type PageId =
   | 'weather'
   | 'logs'
   | 'settings'
-  | 'about';
+  | 'about'
+  | 'login';
 
 interface SidebarProps {
   currentPage: PageId;
@@ -42,6 +45,7 @@ const menuItems: { id: PageId; label: string; icon: typeof LayoutDashboard }[] =
 ];
 
 export function Sidebar({ currentPage, onPageChange }: SidebarProps) {
+  const { logout, currentUser } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const sidebarContent = (
@@ -91,7 +95,36 @@ export function Sidebar({ currentPage, onPageChange }: SidebarProps) {
       </nav>
 
       {/* Footer Info */}
-      <div className="border-t border-slate-200/50 dark:border-slate-800/50 p-6 text-center">
+      <div className="border-t border-slate-200/50 dark:border-slate-800/50 p-4 space-y-4">
+                <div className="flex items-center justify-between px-2">
+          {currentUser ? (
+            <>
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
+                  {currentUser.username.charAt(0)}
+                </div>
+                <div className="text-sm font-semibold text-slate-900 dark:text-white truncate max-w-[100px]">
+                  {currentUser.username}
+                </div>
+              </div>
+              <button 
+                onClick={logout}
+                className="p-2 text-slate-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors"
+                title="Keluar"
+              >
+                <LogOut size={18} />
+              </button>
+            </>
+          ) : (
+            <button 
+              onClick={() => { onPageChange('login'); setMobileOpen(false); }}
+              className="w-full py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition-colors flex items-center justify-center"
+            >
+              Login Admin
+            </button>
+          )}
+        </div>
+        
         <p className="text-[10px] font-bold tracking-wider text-slate-600 dark:text-slate-500 uppercase">
           NexaGrow Web v2.0
         </p>

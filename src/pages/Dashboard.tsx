@@ -62,20 +62,17 @@ export function Dashboard({ sensorData, settings, weatherData }: DashboardProps)
       </div>
       </div>
 
-      {/* Node Cards */}
+            {/* Node Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <NodeCard 
           nodeName="Wemos Node 1" 
-          data={node1} 
-          status={isNode1Online ? 'online' : 'offline'} 
+          data={node1}
         />
         <NodeCard 
           nodeName="Wemos Node 2" 
-          data={node2} 
-          status={isNode2Online ? 'online' : 'offline'} 
+          data={node2}
         />
       </div>
-
       {/* Comparison Panel */}
       <div className="glass-card p-6 border border-slate-200 dark:border-slate-800">
         <h3 className="text-lg font-bold mb-4 flex items-center gap-2">

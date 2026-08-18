@@ -4,6 +4,8 @@ import { Timer, Droplets } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useControl } from '../hooks/useControl';
 import { SensorData } from '../hooks/useSensorData';
+import { useAuth } from '../hooks/useAuth';
+import { AlertCircle } from 'lucide-react';
 
 interface ControlPanelProps {
   sensorData: SensorData | null;
@@ -12,6 +14,8 @@ interface ControlPanelProps {
 // getAutoControlDetails removed; logic implemented inside component to use runtime refs
 
 export function ControlPanel({ sensorData }: ControlPanelProps) {
+  const { currentUser } = useAuth();
+  const isAdmin = currentUser?.role === "admin";
   const { sendCommand, loading } = useControl();
 
   const handleCommand = async (action: string, duration?: number, data?: Record<string, any>) => {

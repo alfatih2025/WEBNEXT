@@ -4,7 +4,6 @@ import type { NodeSensorData } from '../hooks/useMultiNodeSensorData';
 interface NodeCardProps {
   nodeName: string;
   data: NodeSensorData | null;
-  status: 'online' | 'offline';
 }
 
 function formatOneDecimal(value: number | null | undefined) {
@@ -12,21 +11,15 @@ function formatOneDecimal(value: number | null | undefined) {
   return Number(value).toFixed(1);
 }
 
-export function NodeCard({ nodeName, data, status }: NodeCardProps) {
-  const isOnline = status === 'online';
-
+export function NodeCard({ nodeName, data }: NodeCardProps) {
   return (
     <div className="glass-card p-6 flex flex-col relative overflow-hidden group">
       {/* Background Glow */}
-      <div className={`absolute -right-20 -top-20 w-64 h-64 rounded-full blur-3xl opacity-20 pointer-events-none transition-colors duration-1000 ${isOnline ? 'bg-green-500' : 'bg-red-500'}`} />
+      <div className={`absolute -right-20 -top-20 w-64 h-64 rounded-full blur-3xl opacity-20 pointer-events-none transition-colors duration-1000 bg-blue-500`} />
       
       <div className="flex justify-between items-center mb-6 relative z-10">
         <div className="flex items-center gap-3">
-          <div className={`w-3 h-3 rounded-full ${isOnline ? 'bg-green-400 shadow-[0_0_10px_rgba(52,211,153,0.8)]' : 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]'}`} />
           <h2 className="text-xl font-bold tracking-tight">{nodeName}</h2>
-        </div>
-        <div className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide border ${isOnline ? 'border-green-500/30 text-green-600 dark:text-green-400 bg-green-500/10' : 'border-red-500/30 text-red-600 dark:text-red-400 bg-red-500/10'}`}>
-          {status}
         </div>
       </div>
 

@@ -21,12 +21,15 @@ import { useMqttStatus } from './hooks/useMqttStatus';
 import { getPlantHealthSummary } from './lib/plantPhase';
 import { getSensorHistorySnapshot, publishRainChance } from './services/mqtt';
 import { recordActivity } from './lib/activityLog';
+import { LoginPage } from './pages/LoginPage';
+import { useAuth } from './hooks/useAuth';
 
 import './index.css';
 
 function resolvePageFromPath(pathname: string) {
   const normalized = pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
   switch (normalized) {
+    case 'login': return 'login';
     case 'dashboard':
     case 'monitoring':
     case 'chat':
@@ -42,6 +45,7 @@ function resolvePageFromPath(pathname: string) {
 }
 
 function App() {
+  const { currentUser } = useAuth();
   const [currentPage, setCurrentPage] = useState<PageId>(() => {
     if (typeof window === 'undefined') return 'dashboard';
     return resolvePageFromPath(window.location.pathname) as PageId;
@@ -212,6 +216,8 @@ function App() {
 
   const renderPage = () => {
     switch (currentPage) {
+      case 'login':
+        return <LoginPage onLoginSuccess={() => setCurrentPage('dashboard')} />;
       case 'dashboard':
         return (
           <Dashboard
@@ -244,6 +250,8 @@ function App() {
         );
     }
   };
+
+  
 
   if (sensorLoading && !sensorData) {
     return (

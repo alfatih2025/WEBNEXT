@@ -18,6 +18,7 @@
     "@types/express": "^5.0.6",
     "esbuild": "^0.28.2",
     "express": "^5.2.1",
+    "firebase": "^12.17.1",
     "framer-motion": "^12.35.0",
     "lucide-react": "^0.577.0",
     "mqtt": "^5.15.2",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@firebase/eslint-plugin-security-rules": "^0.0.2",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",

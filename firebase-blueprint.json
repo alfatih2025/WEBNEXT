@@ -1,0 +1,61 @@
+{
+  "entities": {
+    "settings": {
+      "title": "Settings",
+      "description": "Application settings",
+      "type": "object",
+      "properties": {
+        "plant_phase": { "type": "string" },
+        "location": { "type": "string" },
+        "temp_threshold_high": { "type": "number" },
+        "temp_threshold_low": { "type": "number" },
+        "soil_threshold_low": { "type": "number" },
+        "soil_threshold_high": { "type": "number" },
+        "soil_threshold_critical": { "type": "number" },
+        "humidity_threshold_low": { "type": "number" },
+        "humidity_threshold_high": { "type": "number" },
+        "ph_min": { "type": "number" },
+        "ph_max": { "type": "number" },
+        "auto_report": { "type": "boolean" },
+        "report_time": { "type": "string" },
+        "watering_time": { "type": "string" },
+        "watering_duration": { "type": "number" },
+        "watering_enabled": { "type": "boolean" }
+      }
+    },
+    "activity_log": {
+      "title": "Activity Log",
+      "description": "Log of system activities",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string" },
+        "message": { "type": "string" },
+        "details": { "type": "object" },
+        "timestamp": { "type": "string" }
+      }
+    },
+    "user": {
+      "title": "User",
+      "description": "User profile with roles",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] }
+      }
+    }
+  },
+  "firestore": {
+    "settings/{settingId}": {
+      "schema": { "$ref": "#/entities/settings" },
+      "description": "Global application settings (id: 'global')"
+    },
+    "activity_logs/{logId}": {
+      "schema": { "$ref": "#/entities/activity_log" },
+      "description": "System activity logs"
+    },
+    "users/{userId}": {
+      "schema": { "$ref": "#/entities/user" },
+      "description": "User profiles and RBAC roles"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+      );
+    }
+
+    // Settings (global)
+    match /settings/{settingId} {
+      allow read: if true; // Publicly readable for guests
+      allow write: if isAdmin();
+    }
+
+    // Activity Logs
+    match /activity_logs/{logId} {
+      allow read: if true; // Publicly readable for guests
+      allow write: if isAdmin(); // Only admins can manually write/delete logs
+    }
+
+    // Users
+    match /users/{userId} {
+      // Users can read their own profile, admins can read all
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      // Admins can create/update/delete users
+      allow write: if isAdmin();
+    }
+  }
+}

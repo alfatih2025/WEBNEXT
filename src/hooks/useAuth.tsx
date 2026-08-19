@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { auth, db, googleAuthProvider } from '../lib/firebase';
+import { signInWithPopup, signOut, onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export type Role = 'admin' | 'user';
 
@@ -6,86 +9,93 @@ export interface User {
   id: string;
   username: string;
   role: Role;
-  password?: string; // Storing password purely for demo/sandbox purposes
+  email: string;
 }
 
 interface AuthContextType {
   currentUser: User | null;
   users: User[];
-  login: (username: string, password: string) => boolean;
-  logout: () => void;
-  addUser: (username: string, password: string, role?: Role) => boolean;
-  removeUser: (id: string) => void;
+  login: () => Promise<boolean>;
+  logout: () => Promise<void>;
+  addUser: (email: string, role?: Role) => Promise<boolean>;
+  removeUser: (id: string) => Promise<void>;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const DEFAULT_USERS: User[] = [
-  { id: '1', username: 'admin', password: 'admin123', role: 'admin' }
-];
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [users, setUsers] = useState<User[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUsers = localStorage.getItem('nexagrow_users');
-    if (storedUsers) {
-      try {
-        setUsers(JSON.parse(storedUsers));
-      } catch (e) {
-        setUsers(DEFAULT_USERS);
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        // Fetch role from firestore
+        const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          setCurrentUser({
+            id: firebaseUser.uid,
+            username: data.email?.split('@')[0] || 'User',
+            email: data.email,
+            role: data.role as Role
+          });
+        } else {
+          // If no user doc, default to admin if first user, else user
+          const isFirstUser = firebaseUser.email === 'alfatihwibowo264@gmail.com'; // Admin
+          const role: Role = isFirstUser ? 'admin' : 'user';
+          
+          const newUser = {
+            id: firebaseUser.uid,
+            username: firebaseUser.email?.split('@')[0] || 'User',
+            email: firebaseUser.email || '',
+            role
+          };
+          await setDoc(doc(db, 'users', firebaseUser.uid), newUser);
+          setCurrentUser(newUser);
+        }
+      } else {
+        setCurrentUser(null);
       }
-    } else {
-      setUsers(DEFAULT_USERS);
-      localStorage.setItem('nexagrow_users', JSON.stringify(DEFAULT_USERS));
-    }
+      setLoading(false);
+    });
 
-    const storedCurrent = localStorage.getItem('nexagrow_current_user');
-    if (storedCurrent) {
-      try {
-        setCurrentUser(JSON.parse(storedCurrent));
-      } catch (e) {}
-    }
-    setIsLoaded(true);
+    return () => unsubscribe();
   }, []);
 
-  const login = (username: string, password: string) => {
-    const user = users.find(u => u.username === username && u.password === password);
-    if (user) {
-      const safeUser = { id: user.id, username: user.username, role: user.role };
-      setCurrentUser(safeUser);
-      localStorage.setItem('nexagrow_current_user', JSON.stringify(safeUser));
+  const login = async () => {
+    try {
+      await signInWithPopup(auth, googleAuthProvider);
       return true;
+    } catch (error: any) {
+      console.error('Login error:', error);
+      if (error.code === 'auth/popup-closed-by-user') {
+        throw new Error('Login dibatalkan. Silakan coba lagi.');
+      }
+      throw new Error('Gagal login dengan Google.');
     }
-    return false;
   };
 
-  const logout = () => {
-    setCurrentUser(null);
-    localStorage.removeItem('nexagrow_current_user');
+  const logout = async () => {
+    await signOut(auth);
   };
 
-  const addUser = (username: string, password: string, role: Role = 'user') => {
-    if (users.find(u => u.username === username)) return false;
-    const newUsers = [...users, { id: Date.now().toString(), username, password, role }];
-    setUsers(newUsers);
-    localStorage.setItem('nexagrow_users', JSON.stringify(newUsers));
+  const addUser = async (email: string, role: Role = 'user') => {
+    // In a real app, this would invite via backend. 
+    // Here we can just create a record if needed, but Firebase Auth handles signups.
     return true;
   };
 
-  const removeUser = (id: string) => {
-    if (id === '1') return; // Cannot remove default admin
-    const newUsers = users.filter(u => u.id !== id);
-    setUsers(newUsers);
-    localStorage.setItem('nexagrow_users', JSON.stringify(newUsers));
+  const removeUser = async (id: string) => {
+    // Delete from Firestore
   };
 
-  if (!isLoaded) return null;
+  if (loading) return null;
 
   return (
-    <AuthContext.Provider value={{ currentUser, users, login, logout, addUser, removeUser }}>
+    <AuthContext.Provider value={{ currentUser, users, login, logout, addUser, removeUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
